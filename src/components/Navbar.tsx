@@ -1,15 +1,25 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, User, Menu, X, Search } from 'lucide-react';
+import { ShoppingCart, User, Menu, X, Search, LogOut, LogIn } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
+import { useAuth } from '@/context/AuthContext';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const location = useLocation();
   const { cartCount } = useStore();
+  const { user, signOut } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -72,12 +82,36 @@ const Navbar = () => {
               </Link>
             </Button>
             
-            <Button variant="ghost" size="icon" asChild className="hidden md:flex">
-              <Link to="/account">
-                <User className="h-5 w-5" />
-                <span className="sr-only">Account</span>
-              </Link>
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="hidden md:flex">
+                    <User className="h-5 w-5" />
+                    <span className="sr-only">Account</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/account" className="w-full cursor-pointer">
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Sign out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button variant="ghost" size="icon" asChild className="hidden md:flex">
+                <Link to="/auth">
+                  <LogIn className="h-5 w-5" />
+                  <span className="sr-only">Sign In</span>
+                </Link>
+              </Button>
+            )}
             
             <div className="relative">
               <Button variant="ghost" size="icon" asChild>
@@ -134,12 +168,31 @@ const Navbar = () => {
                       </Link>
                     </Button>
                     
-                    <Button asChild variant="outline" className="w-full justify-start">
-                      <Link to="/account" className="flex items-center">
-                        <User className="mr-2 h-5 w-5" />
-                        Account
-                      </Link>
-                    </Button>
+                    {user ? (
+                      <>
+                        <Button asChild variant="outline" className="w-full justify-start">
+                          <Link to="/account" className="flex items-center">
+                            <User className="mr-2 h-5 w-5" />
+                            Account
+                          </Link>
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          className="w-full justify-start"
+                          onClick={() => signOut()}
+                        >
+                          <LogOut className="mr-2 h-5 w-5" />
+                          Sign out
+                        </Button>
+                      </>
+                    ) : (
+                      <Button asChild variant="outline" className="w-full justify-start">
+                        <Link to="/auth" className="flex items-center">
+                          <LogIn className="mr-2 h-5 w-5" />
+                          Sign In
+                        </Link>
+                      </Button>
+                    )}
                     
                     <Button asChild variant="default" className="w-full justify-start">
                       <Link to="/cart" className="flex items-center">
