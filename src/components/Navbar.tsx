@@ -7,6 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -55,7 +56,7 @@ const Navbar = () => {
             to="/" 
             className="font-display font-bold text-xl md:text-2xl hover:opacity-80 transition-opacity"
           >
-            Modern<span className="text-primary">Store</span>
+            Luxe<span className="text-primary">Lane</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -75,6 +76,8 @@ const Navbar = () => {
 
           {/* Right Side - Cart, Account, etc */}
           <div className="flex items-center space-x-4">
+            <ThemeToggle />
+            
             <Button variant="ghost" size="icon" asChild className="hidden md:flex">
               <Link to="/search">
                 <Search className="h-5 w-5" />
@@ -141,7 +144,7 @@ const Navbar = () => {
                 <div className="flex flex-col h-full py-6">
                   <div className="flex items-center justify-between mb-8">
                     <span className="font-display font-bold text-xl">
-                      Modern<span className="text-primary">Store</span>
+                      Luxe<span className="text-primary">Lane</span>
                     </span>
                   </div>
                   
@@ -161,6 +164,11 @@ const Navbar = () => {
                   </nav>
                   
                   <div className="flex flex-col space-y-4 mt-auto">
+                    <div className="flex justify-between items-center px-2 py-2 border rounded-md">
+                      <span>Theme</span>
+                      <ThemeToggle />
+                    </div>
+                    
                     <Button asChild variant="outline" className="w-full justify-start">
                       <Link to="/search" className="flex items-center">
                         <Search className="mr-2 h-5 w-5" />

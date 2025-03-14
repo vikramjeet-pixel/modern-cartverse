@@ -12,7 +12,7 @@ const Footer = () => {
           <div className="md:col-span-1">
             <Link to="/" className="inline-block mb-4">
               <h3 className="font-display font-bold text-xl">
-                Modern<span className="text-primary">Store</span>
+                Luxe<span className="text-primary">Lane</span>
               </h3>
             </Link>
             <p className="text-muted-foreground mb-4 max-w-xs">
@@ -110,7 +110,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <li className="flex items-center text-sm text-muted-foreground">
                 <Mail size={14} className="mr-2" />
-                <span>support@modernstore.com</span>
+                <span>support@luxelane.com</span>
               </li>
               <li className="flex items-center text-sm text-muted-foreground">
                 <Phone size={14} className="mr-2" />
@@ -126,7 +126,7 @@ const Footer = () => {
                 <input
                   type="email"
                   placeholder="Your email"
-                  className="bg-white/50 text-sm rounded-l-md border border-border px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary w-full"
+                  className="bg-white/50 dark:bg-white/10 text-sm rounded-l-md border border-border px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary w-full"
                   required
                 />
                 <button
@@ -141,7 +141,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground">
-          <p>© {currentYear} ModernStore. All rights reserved.</p>
+          <p>© {currentYear} LuxeLane. All rights reserved.</p>
         </div>
       </div>
     </footer>
