@@ -20,6 +20,8 @@ import CategoryPage from "./pages/Category";
 import AboutPage from "./pages/About";
 import AuthPage from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import SearchPage from "./pages/Search";
+import AdminPage from "./pages/Admin";
 
 // Components
 import Navbar from "./components/Navbar";
@@ -50,6 +52,8 @@ const App = () => (
                     <Route path="/categories/:category" element={<CategoryPage />} />
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/auth" element={<AuthPage />} />
+                    <Route path="/search" element={<SearchPage />} />
+                    <Route path="/admin" element={<AdminPage />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </main>

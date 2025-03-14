@@ -1,13 +1,14 @@
 
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, User, Menu, X, Search, LogOut, LogIn } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ShoppingCart, User, Menu, X, Search, LogOut, LogIn, LayoutDashboard } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { useAuth } from '@/context/AuthContext';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { Input } from '@/components/ui/input';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,10 +20,13 @@ import {
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { cartCount } = useStore();
   const { user, signOut } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -40,6 +44,25 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    // Check if user is admin based on email
+    if (user) {
+      setIsAdmin(user.email === 'admin@example.com');
+    } else {
+      setIsAdmin(false);
+    }
+  }, [user]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+    } else {
+      navigate('/search');
+    }
+  };
 
   return (
     <header 
@@ -78,12 +101,24 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <ThemeToggle />
             
-            <Button variant="ghost" size="icon" asChild className="hidden md:flex">
-              <Link to="/search">
+            <form onSubmit={handleSearch} className="hidden md:flex items-center relative">
+              <Input
+                type="search"
+                placeholder="Search..."
+                className="w-full md:w-[180px] lg:w-[250px] pr-8"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="absolute right-0 top-0"
+                type="submit"
+              >
                 <Search className="h-5 w-5" />
                 <span className="sr-only">Search</span>
-              </Link>
-            </Button>
+              </Button>
+            </form>
             
             {user ? (
               <DropdownMenu>
@@ -101,6 +136,14 @@ const Navbar = () => {
                       Profile
                     </Link>
                   </DropdownMenuItem>
+                  {isAdmin && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/admin" className="w-full cursor-pointer">
+                        <LayoutDashboard className="mr-2 h-4 w-4" />
+                        <span>Admin Dashboard</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Sign out</span>
@@ -148,6 +191,26 @@ const Navbar = () => {
                     </span>
                   </div>
                   
+                  <form onSubmit={handleSearch} className="mb-6">
+                    <div className="flex items-center relative">
+                      <Input
+                        type="search"
+                        placeholder="Search..."
+                        className="w-full pr-8"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="absolute right-0 top-0"
+                        type="submit"
+                      >
+                        <Search className="h-5 w-5" />
+                      </Button>
+                    </div>
+                  </form>
+                  
                   <nav className="flex flex-col space-y-6 mb-8">
                     {navigation.map((item) => (
                       <Link
@@ -169,13 +232,6 @@ const Navbar = () => {
                       <ThemeToggle />
                     </div>
                     
-                    <Button asChild variant="outline" className="w-full justify-start">
-                      <Link to="/search" className="flex items-center">
-                        <Search className="mr-2 h-5 w-5" />
-                        Search
-                      </Link>
-                    </Button>
-                    
                     {user ? (
                       <>
                         <Button asChild variant="outline" className="w-full justify-start">
@@ -184,6 +240,16 @@ const Navbar = () => {
                             Account
                           </Link>
                         </Button>
+                        
+                        {isAdmin && (
+                          <Button asChild variant="outline" className="w-full justify-start">
+                            <Link to="/admin" className="flex items-center">
+                              <LayoutDashboard className="mr-2 h-5 w-5" />
+                              Admin Dashboard
+                            </Link>
+                          </Button>
+                        )}
+                        
                         <Button 
                           variant="outline" 
                           className="w-full justify-start"
