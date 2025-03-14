@@ -23,7 +23,7 @@
     --secondary-foreground: 240 6% 10%;
 
     --muted: 240 5% 96%;
-    --muted-foreground: 240 4% 46.1%;
+    --muted-foreground: 240 4% 26%; /* Darkened for better visibility in light mode */
 
     --accent: 240 5% 96%;
     --accent-foreground: 240 6% 10%;
@@ -64,7 +64,7 @@
     --secondary-foreground: 0 0% 98%;
 
     --muted: 240 4% 16%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted-foreground: 240 5% 84.9%; /* Lightened for better visibility in dark mode */
 
     --accent: 240 4% 16%;
     --accent-foreground: 0 0% 98%;
